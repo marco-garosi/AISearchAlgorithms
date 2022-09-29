@@ -1,7 +1,7 @@
 # Artificial Intelligence Search Algorithms
 Search Algorithms applied to Artificial Intelligence (agent search) with real-time visualization to better understand how they work and how they reach the goal.
 
-# How to use
+# How to use
 Here's the basic steps to get this software running.
 
 ## 1
