@@ -5,6 +5,7 @@ from queue import PriorityQueue
 from QueueItem import QueueItem
 
 class AStarSearch(SearchAlgorithm):
+
     @staticmethod
     def search(problem, function=None, console_output=False) -> SearchSolution:
         """Return a Node (solution) or None (no solution)
@@ -26,9 +27,8 @@ class AStarSearch(SearchAlgorithm):
         while not frontier.empty():
             node = frontier.get().node
 
-            iteration = iteration + 1
             if console_output:
-                print(str(iteration) + " | Visiting (" + str(node.state.row) + ", " + str(node.state.column) + ") | Cost = " + str(node.cost) + " | f(node) = " + str(problem.f(node)))
+                print(str(iteration + 1) + " | Visiting (" + str(node.state.row) + ", " + str(node.state.column) + ") | Cost = " + str(node.cost) + " | f(node) = " + str(problem.f(node)))
 
             # Update the output grid
             if function is not None:
@@ -37,7 +37,7 @@ class AStarSearch(SearchAlgorithm):
             # Check for goal
             if problem.is_goal(node.state):
                 if console_output:
-                    print("\n> Total iterations: " + str(iteration))
+                    print("\n> Total iterations: " + str(iteration + 1))
 
                 # Return the solution (goal node). The found path can be followed
                 # backwards, since Node(s) have a connection with their parents
@@ -51,5 +51,7 @@ class AStarSearch(SearchAlgorithm):
                 if s not in reached or child.cost < reached[s].cost:
                     reached[s] = child
                     frontier.put(QueueItem(float(problem.f(child)), child))
+
+            iteration = iteration + 1
 
         return None

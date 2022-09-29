@@ -9,13 +9,14 @@ class Problem:
     Represent a problem
     """
 
-    def __init__(self, graph: Graph, initial, goal, actions, width=0, height=0):
+    def __init__(self, graph: Graph, initial, goal, actions, width=0, height=0, obstacles=[]):
         self.graph = graph
         self.initial = initial
         self.goal = goal
         self.actions = actions
         self.width = width
         self.height = height
+        self.obstacles = obstacles
 
     def is_goal(self, state):
         """Return True if given state is the goal
@@ -50,33 +51,49 @@ class Problem:
         """
 
         if action == "UP":
-            if state.row == 0:
+            if state.row == 0 or self.obstacles_block_action(state, action):
                 return None
             else:
                 return State(state.row - 1, state.column)
         elif action == "DOWN":
-            if state.row == self.height - 1:
+            if state.row == self.height - 1  or self.obstacles_block_action(state, action):
                 return None
             else:
                 return State(state.row + 1, state.column)
         elif action == "LEFT":
-            if state.column == 0:
+            if state.column == 0 or self.obstacles_block_action(state, action):
                 return None
             else:
                 return State(state.row, state.column - 1)
         elif action == "RIGHT":
-            if state.column == self.width - 1:
+            if state.column == self.width - 1 or self.obstacles_block_action(state, action):
                 return None
             else:
                 return State(state.row, state.column + 1)
+
+    def obstacles_block_action(self, state, action) -> bool:
+        """Return True if any obstacles blocks action.
+
+        Checks whether action is a valid action in the current environment, that is
+        if there's any obstacles in the surroundings.
+        """
+
+        for obstacle in self.obstacles:
+            if (action == "UP" and obstacle.column == state.column and obstacle.row == state.row - 1) or \
+                (action == "DOWN" and obstacle.column == state.column and obstacle.row == state.row + 1) or \
+                (action == "LEFT" and obstacle.row == state.row and obstacle.column == state.column - 1) or \
+                (action == "RIGHT" and obstacle.row == state.row and obstacle.column == state.column + 1):
+                return True
+
+        return False
 
     def h(self, state):
         """
         Return some heuristic function
         """
 
-        return self.h1(state)
-        # return self.h2(state)
+        # return self.h1(state)
+        return self.h2(state)
 
     def h1(self, state):
         """
@@ -97,8 +114,8 @@ class Problem:
         Return some cost-evaluation function
         """
 
-        return self.f_standard(node)
-        # return self.f_weighted(node, weight=1.3)
+        # return self.f_standard(node)
+        return self.f_weighted(node, weight=1.3)
 
     def f_standard(self, node):
         """
