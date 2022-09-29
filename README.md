@@ -10,7 +10,7 @@ You should install the required packages (see `requirements.txt`). The software 
 ## 2
 Run `main.py`.
 
-## How to change tweak parameters
+## How to change/tweak parameters
 You may change some parameters in the `Problem.py` source file.
 You may change the cost-evaluation function `f(n)` to return:
 - "standard" f, as described in the simple version of A*: f(n) = g(n) + h(n);
